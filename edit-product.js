@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const API_BASE_URL = "https://backend2-9rho.onrender.com"; // Change if needed
+    const API_BASE_URL = "https://backend2-9rho.onrender.com";
     const productId = new URLSearchParams(window.location.search).get("id");
 
     if (!productId) {
@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const editForm = document.getElementById("edit-form");
 
+
     // ✅ Load Product Data
     async function loadProduct() {
         try {
@@ -16,12 +17,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!response.ok) throw new Error("❌ Failed to load product data.");
             const product = await response.json();
 
-            // Populate fields
             document.getElementById("name").value = product.name;
             document.getElementById("price").value = product.price;
             document.getElementById("stock").value = product.stock;
-            document.getElementById("description").value = product.description;
             document.getElementById("category").value = product.category;
+
+            // ✅ Set the product description inside Quill Editor
+            quill.root.innerHTML = product.description;
 
             // ✅ Show Main Image (No Change)
             document.getElementById("main-image-preview").src = product.images[0] || "placeholder.jpg";
@@ -30,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // ✅ Handle Form Submission (Without Redirect)
+    // ✅ Handle Form Submission (Save Quill Content)
     editForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -38,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             name: document.getElementById("name").value,
             price: document.getElementById("price").value,
             stock: document.getElementById("stock").value,
-            description: document.getElementById("description").value,
+            description: quill.root.innerHTML, // ✅ Get Quill content
             category: document.getElementById("category").value
         };
 
@@ -63,3 +65,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     loadProduct();
 });
+
