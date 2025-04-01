@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             // ✅ Set Product Information
             document.getElementById("product-name").textContent = product.name;
             document.getElementById("product-price").textContent = `₱${product.price.toFixed(2)}`;
-            document.getElementById("product-description").textContent = product.description || "No description available.";
+          document.getElementById("product-description").innerHTML = product.description;
 
             // ✅ Ensure Stock is Displayed Correctly
             updateStockDisplay(product.stock);
